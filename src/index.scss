@@ -1,0 +1,94 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  
+  /* background: #20262E; */
+  padding: 20px;
+  color: #fff;
+  font-size: 1.5em;
+  font-weight: 500;
+}
+p { color: blue; }
+#calculator {
+  border: 1px solid #000;
+  border-bottom: none;
+  border-radius: 4px;
+}
+
+/* Calculator Header */
+#calc-header {
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 2em;
+    padding: 5px 10px;
+    border: 1px solid #000;
+    border-radius: 4px 4px 0 0;
+    background-color: #444;
+    cursor: default;
+  }
+}
+
+/* Calculator Buttons */
+#calc-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-areas:
+    "erase plus-minus percent div"
+    "seven eight nine times"
+    "four five six subtract"
+    "one two three add"
+    "zero zero dot equals";
+  border-radius: 4px;
+
+  /* Generic Button Styling */
+  div {
+    display: flex;
+    height: 2em;
+    align-items: center;
+    justify-content: center;
+    background-color: #aaa;
+    border: 1px solid #000;
+    cursor: pointer;
+  }
+  #seven { grid-area: seven; }
+  #eight { grid-area: eight; }
+  #nine { grid-area: nine; }
+  #four { grid-area: four; }
+  #five { grid-area: five; }
+  #six { grid-area: six; }
+  #one { grid-area: one; }
+  #two { grid-area: two; }
+  #three { grid-area: three; }
+  #zero {
+    border-radius: 0 0 0 4px;
+    grid-area: zero;
+  }
+  #dot { grid-area: dot; }
+
+  /* Dark grey buttons (top row) */
+  #clear, #plus-minus, #percent {
+    background-color: #666;
+  }
+  #clear { grid-area: erase; }
+  #plus-minus { grid-area: plus-minus; }
+  #percent { grid-area: percent; }
+
+  /* Orange buttons (right column) */
+  #divide, #multiply, #minus, #plus, #equals {
+    background-color: orange;
+  }
+  #divide { grid-area: div; }
+  #multiply { grid-area: times; }
+  #minus { grid-area: subtract; }
+  #plus { grid-area: add; }
+  #equals {
+    grid-area: equals;
+    border-radius: 0 0 4px 0;
+  }
+}
