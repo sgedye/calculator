@@ -1,18 +1,168 @@
-.App {
-  text-align: center;
+#calculator {
+  border: 1px solid #000;
+  border-bottom: none;
+  border-radius: 4px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Calculator Buttons */
+#calc-buttons {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-areas: "erase plus-minus percent div" "seven eight nine times" "four five six subtract" "one two three add" "zero zero dot equals";
+  border-radius: 4px;
+  /* Generic Button Styling */
+  /* Dark grey buttons (top row) */
+  /* Orange buttons (right column) */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+#calc-buttons div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 2em;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-color: #aaa;
+  border: 1px solid #000;
+  cursor: pointer;
 }
 
+#calc-buttons #seven {
+  -ms-grid-row: 2;
+  -ms-grid-column: 1;
+  grid-area: seven;
+}
+
+#calc-buttons #eight {
+  -ms-grid-row: 2;
+  -ms-grid-column: 2;
+  grid-area: eight;
+}
+
+#calc-buttons #nine {
+  -ms-grid-row: 2;
+  -ms-grid-column: 3;
+  grid-area: nine;
+}
+
+#calc-buttons #four {
+  -ms-grid-row: 3;
+  -ms-grid-column: 1;
+  grid-area: four;
+}
+
+#calc-buttons #five {
+  -ms-grid-row: 3;
+  -ms-grid-column: 2;
+  grid-area: five;
+}
+
+#calc-buttons #six {
+  -ms-grid-row: 3;
+  -ms-grid-column: 3;
+  grid-area: six;
+}
+
+#calc-buttons #one {
+  -ms-grid-row: 4;
+  -ms-grid-column: 1;
+  grid-area: one;
+}
+
+#calc-buttons #two {
+  -ms-grid-row: 4;
+  -ms-grid-column: 2;
+  grid-area: two;
+}
+
+#calc-buttons #three {
+  -ms-grid-row: 4;
+  -ms-grid-column: 3;
+  grid-area: three;
+}
+
+#calc-buttons #zero {
+  border-radius: 0 0 0 4px;
+  -ms-grid-row: 5;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-area: zero;
+}
+
+#calc-buttons #dot {
+  -ms-grid-row: 5;
+  -ms-grid-column: 3;
+  grid-area: dot;
+}
+
+#calc-buttons #clear, #calc-buttons #plus-minus, #calc-buttons #percent {
+  background-color: #666;
+}
+
+#calc-buttons #clear {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  grid-area: erase;
+}
+
+#calc-buttons #plus-minus {
+  -ms-grid-row: 1;
+  -ms-grid-column: 2;
+  grid-area: plus-minus;
+}
+
+#calc-buttons #percent {
+  -ms-grid-row: 1;
+  -ms-grid-column: 3;
+  grid-area: percent;
+}
+
+#calc-buttons #divide, #calc-buttons #multiply, #calc-buttons #minus, #calc-buttons #plus, #calc-buttons #equals {
+  background-color: orange;
+}
+
+#calc-buttons #divide {
+  -ms-grid-row: 1;
+  -ms-grid-column: 4;
+  grid-area: div;
+}
+
+#calc-buttons #multiply {
+  -ms-grid-row: 2;
+  -ms-grid-column: 4;
+  grid-area: times;
+}
+
+#calc-buttons #minus {
+  -ms-grid-row: 3;
+  -ms-grid-column: 4;
+  grid-area: subtract;
+}
+
+#calc-buttons #plus {
+  -ms-grid-row: 4;
+  -ms-grid-column: 4;
+  grid-area: add;
+}
+
+#calc-buttons #equals {
+  -ms-grid-row: 5;
+  -ms-grid-column: 4;
+  grid-area: equals;
+  border-radius: 0 0 4px 0;
+}
+/*# sourceMappingURL=index.css.map */
+
+
+
+
+/*
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -23,16 +173,4 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+*/
