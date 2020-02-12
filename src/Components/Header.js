@@ -20,17 +20,10 @@ const StyledDiv = styled.div`
 `
 
 class Header extends React.Component {
-  constructor(props) {
-    super(props)
-  
-  }
-  
   render() {
-    const { msg} = this.props
+    const { answer } = this.props
     return (
-    	<div id="calc-header">
-    	  <StyledDiv>{msg}</StyledDiv>  
-      </div>      
+    	<StyledDiv id="calc-header">{answer}</StyledDiv>
     )
   }
 }

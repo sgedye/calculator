@@ -1,21 +1,40 @@
 import React from 'react'
-import './App.css'
+import styled from 'styled-components'
+
 import Body from './Components/Body.js'
 import Header from './Components/Header.js'
+
+const Title = styled.h2`
+  font-size: 2em;
+  padding: 20px 0 0 0;
+  text-align: center;
+  color: #000;
+`
+const Calculator = styled.div`
+  border: 1px solid #000;
+  border-bottom: none;
+  border-radius: 4px;
+  max-width: 600px;
+  margin: 20px auto;
+`
 
 class App extends React.Component {
   constructor() {
     super()
     this.state = {
-      answer: 'Hello There, this is a message'
+      answer: '0'
     }
   }
   render() {
     return (
-      <div>
-        <Header msg={this.state.answer} />
-        <Body />
-      </div>
+      <React.Fragment>
+        <Title id="title">Calculator</Title>
+        <Calculator id="calculator">
+          <Header answer={this.state.answer} />
+          {/* I may have to move this into the body for the buttons to work */}
+          <Body />
+        </Calculator>
+      </React.Fragment>
     )
   }
 }
@@ -128,20 +147,7 @@ class Calculator extends React.Component {
   	return (
       <div>
         <Header answer={this.state.answer} />
-        
-    )
-  }
-}
-
-class Header extends React.Component {
-	constructor(props) {
-  	super(props)
-  }
-  render() {
-    return (
-    	<div id="calc-header">
-    	  <div>{this.props.answer}</div>
-    	</div>
+        <....BODY shiiit....>
     )
   }
 }
