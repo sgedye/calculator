@@ -1,125 +1,169 @@
 import React from 'react'
+import Header from './Header.js'
+import Mousetrap from 'mousetrap'
+import './mousetrap-bind-dictionary'
+
 import './Body.css'
 
 class Body extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      answer: '0',
+      storedValue: '0',
+      operation: '',
+      plusMinusPressed: false,
+      decPressed: false,
+      numPressed: false
+    }
+    this.handleClear = this.handleClear.bind(this)
+    this.handlePlusMinus = this.handlePlusMinus.bind(this)
+    this.handlePercent = this.handlePercent.bind(this)
+    this.handleOperation = this.handleOperation.bind(this)
+    this.handleEquals = this.handleEquals.bind(this)
+    this.handleDot = this.handleDot.bind(this)
+    this.handleNumber = this.handleNumber.bind(this)
+  }
+
+  handleClear() {
+    this.setState(() => ({
+      answer: '0',
+      storedValue: '0',
+      operation: '',
+      plusMinusPressed: false,
+      decPressed: false,
+      numPressed: false
+    }))
+  }
+  handlePlusMinus() {
+    this.setState((prevState) => ({
+      answer: (Number(prevState.answer) * -1).toString(),
+      plusMinusPressed: true
+    }))
+  }
+  handlePercent() {
+    this.setState((prevState) => ({
+      answer: (Number(prevState.answer) / 100).toString(),
+      decPressed: true
+    }))
+  }
+  handleOperation(operation) {
+    this.setState((prevState) => ({
+      storedValue: prevState.answer,
+      operation
+    }))
+  }
+  handleEquals() {
+    switch(this.state.operation) {
+      case '/':
+        this.setState((prevState) => ({
+          answer: (Number(prevState.storedValue) / Number(prevState.answer)).toString()
+        }));
+        break;
+      case 'x':
+        this.setState((prevState) => ({
+          answer: (Number(prevState.storedValue) * Number(prevState.answer)).toString()
+        }));
+        break;
+      case '-':
+        this.setState((prevState) => ({
+          answer: (Number(prevState.storedValue) - Number(prevState.answer)).toString()
+        }));
+        break;
+      case '+':
+        this.setState((prevState) => ({
+          answer: (Number(prevState.storedValue) + Number(prevState.answer)).toString()
+        }));
+        break;
+      default:
+        console.log(`The operation (${this.prevState.operation}) does not exist.`)
+    }
+  }
+  handleDot() {
+    /* . */
+    if (this.state.decPressed === false) {
+      this.setState(prevState => ({
+        answer: prevState.answer += ".",
+        decPressed: true,
+        numPressed: true
+      }))
+    }
+  }
+  handleNumber(digit) {
+    /* 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 */
+
+    if (this.state.plusMinusPressed) { // Function for +/-, % or = new number should be zero.
+      this.handleClear()
+      this.setState((prevState) => ({ answer: '' }))     // Fix this func. once I have operations.
+    }
+
+
+
+    if (this.state.numPressed) {
+      this.setState(prevState => ({ answer: prevState.answer += digit }))
+    }
+    else {
+      if (digit === '0') {
+        //Do nothing
+      }
+      else {
+        this.setState(prevState => ({
+          answer: prevState.answer = digit,
+          numPressed: prevState.numPressed = true
+        }))
+      }
+    }
+  }
+
+
   render() {
+    // Handle keystrokes
+    Mousetrap.bind(['c', 'C', 'esc'], () => { this.handleClear() })
+    Mousetrap.bind(['%'], () => { this.handlePercent() })
+    Mousetrap.bind(['/'], () => { this.handleOperation('/') })
+    Mousetrap.bind(['x', 'X', '*'], () => { this.handleOperation('x') })
+    Mousetrap.bind(['-'], () => { this.handleOperation('-') })
+    Mousetrap.bind(['+'], () => { this.handleOperation('+') })
+    Mousetrap.bind(['enter'], () => { this.handleEquals() })
+    Mousetrap.bind({
+      //'0': this.handleNumber.bind(this, '0'), --- this does exactly the same thing.
+      '0': () => { this.handleNumber('0') },
+      '1': () => { this.handleNumber('1') },
+      '2': () => { this.handleNumber('2') },
+      '3': () => { this.handleNumber('3') },
+      '4': () => { this.handleNumber('4') },
+      '5': () => { this.handleNumber('5') },
+      '6': () => { this.handleNumber('6') },
+      '7': () => { this.handleNumber('7') },
+      '8': () => { this.handleNumber('8') },
+      '9': () => { this.handleNumber('9') },
+      '.': () => { this.handleDot() }
+    })
     return (
-      <div id="calc-buttons">
-        <div
-          id="clear"
-          data-value='C'
-          onClick={(e) => this.handleClick(e)}
-        >C
+      <React.Fragment>
+        <Header answer={this.state.answer}/>
+        <div id="calc-buttons">
+          <div id="clear"     onClick={ () => this.handleClear()        }>C</div>
+          <div id="plus-minus" onClick={() => this.handlePlusMinus()    }>+/-</div>
+          <div id="percent"   onClick={ () => this.handlePercent()      }>%</div>
+          <div id="divide"    onClick={ () => this.handleOperation('/') }>÷</div>
+          <div id="seven"     onClick={ () => this.handleNumber('7')    }>7</div>
+          <div id="eight"     onClick={ () => this.handleNumber('8')    }>8</div>
+          <div id="nine"      onClick={ () => this.handleNumber('9')    }>9</div>
+          <div id="multiply"  onClick={ () => this.handleOperation('x') }>x</div>
+          <div id="four"      onClick={ () => this.handleNumber('4')    }>4</div>
+          <div id="five"      onClick={ () => this.handleNumber('5')    }>5</div>
+          <div id="six"       onClick={ () => this.handleNumber('6')    }>6</div>
+          <div id="minus"     onClick={ () => this.handleOperation('-') }>-</div>
+          <div id="one"       onClick={ () => this.handleNumber('1')    }>1</div>
+          <div id="two"       onClick={ () => this.handleNumber('2')    }>2</div>
+          <div id="three"     onClick={ () => this.handleNumber('3')    }>3</div>
+          <div id="plus"      onClick={ () => this.handleOperation('+') }>+</div>
+          <div id="zero"      onClick={ () => this.handleNumber('0')    }>0</div>
+          <div id="dot"       onClick={ () => this.handleDot()          }>.</div>
+          <div id="equals"    onClick={ () => this.handleEquals()       }>=</div>
         </div>
-        <div
-          id="plus-minus"
-          data-value='+/-'
-          onClick={(e) => this.handleClick(e)}
-        >+/-
-        </div>
-        <div
-          id="percent"
-          data-value='%'
-          onClick={(e) => this.handleClick(e)}
-        >%
-        </div>
-        <div
-          id="divide"
-          data-value='÷'
-          onClick={(e) => this.handleClick(e)}
-        >÷
-        </div>
-        <div
-          id="seven"
-          data-value="7"
-          onClick={(e) => this.handleClick(e)}
-        >7
-        </div>
-        <div 
-          id="eight"
-          data-value="8"
-          onClick={(e) => this.handleClick(e)}
-        >8
-        </div>
-        <div
-          id="nine"
-          data-value="9"
-          onClick={(e) => this.handleClick(e)}
-        >9
-        </div>
-        <div
-          id="multiply"
-          data-value="*"
-          onClick={(e) => this.handleClick(e)}
-        >x
-        </div>
-        <div
-          id="four"
-          data-value="4"
-          onClick={(e) => this.handleClick(e)}
-        >4
-        </div>
-        <div
-          id="five" 
-          data-value="5" 
-          onClick={(e) => this.handleClick(e)}
-        >5
-        </div>
-        <div
-          id="six"
-          data-value="6"
-          onClick={(e) => this.handleClick(e)}
-        >6
-        </div>
-        <div
-          id="minus"
-          data-value="-"
-          onClick={(e) => this.handleClick(e)}
-        >-
-        </div>
-        <div
-          id="one"
-          data-value="1"
-          onClick={(e) => this.handleClick(e)}
-        >1
-        </div>
-        <div
-          id="two"
-          data-value="2"
-          onClick={(e) => this.handleClick(e)}
-        >2
-        </div>
-        <div
-          id="three"
-          data-value="3"
-          onClick={(e) => this.handleClick(e)}
-        >3
-        </div>
-        <div
-          id="plus"
-          data-value="+"
-          onClick={(e) => this.handleClick(e)}
-        >+
-        </div>
-        <div
-          id="zero" 
-          data-value="0"
-          onClick={(e) => this.handleClick(e)}
-        >0
-        </div>
-        <div
-          id="dot"
-          data-value="."
-          onClick={(e) => this.handleClick(e)}
-        >.
-        </div>
-        <div
-          id="equals"
-          data-value="="
-          onClick={(e) => this.handleClick(e)}
-        >=
-        </div>
-      </div>
+      </React.Fragment>
     )
   }
 }
