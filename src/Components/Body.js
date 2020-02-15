@@ -13,6 +13,7 @@ class Body extends React.Component {
       storedValue: '0',
       operation: '',
       plusMinusPressed: false,
+      percentPressed: false,
       decPressed: false,
       numPressed: false
     }
@@ -31,6 +32,7 @@ class Body extends React.Component {
       storedValue: '0',
       operation: '',
       plusMinusPressed: false,
+      percentPressed: false,
       decPressed: false,
       numPressed: false
     }))
@@ -44,39 +46,45 @@ class Body extends React.Component {
   handlePercent() {
     this.setState((prevState) => ({
       answer: (Number(prevState.answer) / 100).toString(),
+      percentPressed: true,
       decPressed: true
     }))
   }
   handleOperation(operation) {
+    //if (this.state.answer !== '0') {
     this.setState((prevState) => ({
       storedValue: prevState.answer,
+      answer: '0',
       operation
     }))
   }
   handleEquals() {
-    switch(this.state.operation) {
-      case '/':
-        this.setState((prevState) => ({
-          answer: (Number(prevState.storedValue) / Number(prevState.answer)).toString()
-        }));
-        break;
-      case 'x':
-        this.setState((prevState) => ({
-          answer: (Number(prevState.storedValue) * Number(prevState.answer)).toString()
-        }));
-        break;
-      case '-':
-        this.setState((prevState) => ({
-          answer: (Number(prevState.storedValue) - Number(prevState.answer)).toString()
-        }));
-        break;
-      case '+':
-        this.setState((prevState) => ({
-          answer: (Number(prevState.storedValue) + Number(prevState.answer)).toString()
-        }));
-        break;
-      default:
-        console.log(`The operation (${this.prevState.operation}) does not exist.`)
+    if (this.state.operation) {
+      switch(this.state.operation) {
+        case '/':
+          this.setState((prevState) => ({
+            answer: (Number(prevState.storedValue) / Number(prevState.answer)).toString()
+          }));
+          break;
+        case 'x':
+          this.setState((prevState) => ({
+            answer: (Number(prevState.storedValue) * Number(prevState.answer)).toString()
+          }));
+          break;
+        case '-':
+          this.setState((prevState) => ({
+            answer: (Number(prevState.storedValue) - Number(prevState.answer)).toString()
+          }));
+          break;
+        case '+':
+          this.setState((prevState) => ({
+            answer: (Number(prevState.storedValue) + Number(prevState.answer)).toString()
+          }));
+          break;
+        default:
+          console.log(`The operation (${this.prevState.operation}) does not exist.`)
+      }
+      this.setState(() => ({ operation: '' }))
     }
   }
   handleDot() {
@@ -92,12 +100,15 @@ class Body extends React.Component {
   handleNumber(digit) {
     /* 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 */
 
-    if (this.state.plusMinusPressed) { // Function for +/-, % or = new number should be zero.
+    if (this.state.plusMinusPressed || this.state.percentPressed) {
       this.handleClear()
-      this.setState((prevState) => ({ answer: '' }))     // Fix this func. once I have operations.
+      this.setState(() => ({ answer: '' }))     // Fix this func. once I have operations.
     }
-
-
+    console.log(this.state.operation)
+    if (this.state.operation !== '') {
+      this.handleEquals()
+    }
+    // If operation is not '', 
 
     if (this.state.numPressed) {
       this.setState(prevState => ({ answer: prevState.answer += digit }))
@@ -107,9 +118,9 @@ class Body extends React.Component {
         //Do nothing
       }
       else {
-        this.setState(prevState => ({
-          answer: prevState.answer = digit,
-          numPressed: prevState.numPressed = true
+        this.setState(() => ({
+          answer: digit,
+          numPressed: true
         }))
       }
     }
@@ -117,13 +128,15 @@ class Body extends React.Component {
 
 
   render() {
+    console.log(this.state)
+    console.log(this.prevState)
     // Handle keystrokes
     Mousetrap.bind(['c', 'C', 'esc'], () => { this.handleClear() })
     Mousetrap.bind(['%'], () => { this.handlePercent() })
     Mousetrap.bind(['/'], () => { this.handleOperation('/') })
     Mousetrap.bind(['x', 'X', '*'], () => { this.handleOperation('x') })
     Mousetrap.bind(['-'], () => { this.handleOperation('-') })
-    Mousetrap.bind(['+'], () => { this.handleOperation('+') })
+    Mousetrap.bind(['+', 'space'], () => { this.handleOperation('+') })
     Mousetrap.bind(['enter'], () => { this.handleEquals() })
     Mousetrap.bind({
       //'0': this.handleNumber.bind(this, '0'), --- this does exactly the same thing.
