@@ -18,6 +18,13 @@ const Calculator = styled.div`
   max-width: 600px;
   margin: 20px auto;
 `
+const Footer = styled.div`
+  font-size: 1.5em;
+  text-shadow: 1px 1px 1px #fff;
+  padding: 20px 0 0 0;
+  text-align: center;
+  color: #000;
+`
 
 function App () {
   return (
@@ -26,6 +33,10 @@ function App () {
       <Calculator id="calculator">
         <Body />
       </Calculator>
+      <Footer id="footer">
+        <h2>Too lazy to use the mouse?</h2>
+        <p>TODO: write out this box of shortcuts. Calc is goood.</p>
+      </Footer>
     </React.Fragment>
   )
 }

@@ -63,6 +63,7 @@ class Body extends React.Component {
   handleOperation(operation) {
     //if (this.state.answer !== '0') {
     if (!!this.state.operation && !this.state.equalsPressed) {
+      this.setState(() => ({ numPressed: false }))
       this.handleEquals()
     }
     this.setState((prevState) => ({
@@ -148,9 +149,9 @@ class Body extends React.Component {
   }
   handleNumber(digit) {
     /* '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' */
-    if (this.state.plusMinusPressed || this.state.percentPressed) {
+    if ((this.state.plusMinusPressed || this.state.percentPressed) && !this.state.operation) {
       this.handleClear()
-      this.setState(() => ({ answer: '' }))     // Fix this func. once I have operations.
+      //this.setState(() => ({ answer: '' }))     // Fix this func. once I have operations.
     }
     if (this.state.numPressed) {
       this.setState((prevState) => ({ answer: prevState.answer += digit }))
