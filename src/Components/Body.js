@@ -4,6 +4,14 @@ import Mousetrap from 'mousetrap'
 import './mousetrap-bind-dictionary'
 
 import './Body.css'
+/*
+const CalculatorOperations = {
+  '/': (prevValue, nextValue) => Number(prevValue) / Number(nextValue),
+  '*': (prevValue, nextValue) => Number(prevValue) * Number(nextValue),
+  '+': (prevValue, nextValue) => Number(prevValue) + Number(nextValue),
+  '-': (prevValue, nextValue) => Number(prevValue) - Number(nextValue),
+  '=': (prevValue, nextValue) => Number(nextValue)
+}*/
 
 class Body extends React.Component {
   constructor() {
@@ -15,7 +23,8 @@ class Body extends React.Component {
       plusMinusPressed: false,
       percentPressed: false,
       decPressed: false,
-      numPressed: false
+      numPressed: false,
+      equalsPressed: false
     }
     this.handleClear = this.handleClear.bind(this)
     this.handlePlusMinus = this.handlePlusMinus.bind(this)
@@ -34,7 +43,8 @@ class Body extends React.Component {
       plusMinusPressed: false,
       percentPressed: false,
       decPressed: false,
-      numPressed: false
+      numPressed: false,
+      equalsPressed: false
     }))
   }
   handlePlusMinus() {
@@ -52,39 +62,78 @@ class Body extends React.Component {
   }
   handleOperation(operation) {
     //if (this.state.answer !== '0') {
+    if (!!this.state.operation && !this.state.equalsPressed) {
+      this.handleEquals()
+    }
     this.setState((prevState) => ({
       storedValue: prevState.answer,
-      answer: '0',
-      operation
+      numPressed: false,
+      operation,
+      equalsPressed: false
     }))
   }
   handleEquals() {
-    if (this.state.operation) {
+    if (!!this.state.operation) {
       switch(this.state.operation) {
         case '/':
-          this.setState((prevState) => ({
-            answer: (Number(prevState.storedValue) / Number(prevState.answer)).toString()
-          }));
-          break;
+          if (this.state.equalsPressed) {
+            this.setState((prevState) => ({
+              answer: ((Number(prevState.answer)) / (Number(prevState.storedValue))).toString()
+            }))
+          } else {
+            let tempVal = this.state.answer
+            this.setState((prevState) => ({
+              storedValue: tempVal,
+              answer: ((Number(prevState.storedValue)) / (Number(prevState.answer))).toString(),
+              equalsPressed: true
+            }))
+          }
+          break
         case 'x':
-          this.setState((prevState) => ({
-            answer: (Number(prevState.storedValue) * Number(prevState.answer)).toString()
-          }));
-          break;
+          if (this.state.equalsPressed) {
+            this.setState((prevState) => ({
+              answer: ((Number(prevState.storedValue)) * (Number(prevState.answer))).toString()
+            }))
+          } else {
+            let tempVal = this.state.answer
+            this.setState((prevState) => ({
+              storedValue: tempVal,
+              answer: ((Number(prevState.storedValue)) * (Number(prevState.answer))).toString(),
+              equalsPressed: true
+            }))
+          }
+          break
         case '-':
-          this.setState((prevState) => ({
-            answer: (Number(prevState.storedValue) - Number(prevState.answer)).toString()
-          }));
-          break;
+          if (this.state.equalsPressed) {
+            this.setState((prevState) => ({
+              answer: String(prevState.answer - prevState.storedValue)
+            }))
+          } else {
+            let tempVal = this.state.answer
+            this.setState((prevState) => ({
+              storedValue: tempVal,
+              answer: String(prevState.storedValue - prevState.answer),
+              equalsPressed: true
+            }))
+          }
+          break
         case '+':
-          this.setState((prevState) => ({
-            answer: (Number(prevState.storedValue) + Number(prevState.answer)).toString()
-          }));
-          break;
+          if (this.state.equalsPressed) {
+            this.setState((prevState) => ({
+              answer: ((Number(prevState.storedValue)) + (Number(prevState.answer))).toString()
+            }))
+          } else {
+            let tempVal = this.state.answer
+            this.setState((prevState) => ({
+              storedValue: tempVal,
+              answer: ((Number(prevState.storedValue)) + (Number(prevState.answer))).toString(),
+              equalsPressed: true
+            }))
+          } 
+          break
         default:
           console.log(`The operation (${this.prevState.operation}) does not exist.`)
       }
-      this.setState(() => ({ operation: '' }))
     }
   }
   handleDot() {
@@ -98,38 +147,26 @@ class Body extends React.Component {
     }
   }
   handleNumber(digit) {
-    /* 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 */
-
+    /* '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' */
     if (this.state.plusMinusPressed || this.state.percentPressed) {
       this.handleClear()
       this.setState(() => ({ answer: '' }))     // Fix this func. once I have operations.
     }
-    console.log(this.state.operation)
-    if (this.state.operation !== '') {
-      this.handleEquals()
-    }
-    // If operation is not '', 
-
     if (this.state.numPressed) {
-      this.setState(prevState => ({ answer: prevState.answer += digit }))
-    }
-    else {
-      if (digit === '0') {
-        //Do nothing
-      }
-      else {
+      this.setState((prevState) => ({ answer: prevState.answer += digit }))
+    } else {
+      if (digit !== '0') {
         this.setState(() => ({
           answer: digit,
           numPressed: true
         }))
-      }
+      }      
     }
   }
 
-
   render() {
     console.log(this.state)
-    console.log(this.prevState)
+    //console.log(this.prevState)
     // Handle keystrokes
     Mousetrap.bind(['c', 'C', 'esc'], () => { this.handleClear() })
     Mousetrap.bind(['%'], () => { this.handlePercent() })
@@ -137,7 +174,7 @@ class Body extends React.Component {
     Mousetrap.bind(['x', 'X', '*'], () => { this.handleOperation('x') })
     Mousetrap.bind(['-'], () => { this.handleOperation('-') })
     Mousetrap.bind(['+', 'space'], () => { this.handleOperation('+') })
-    Mousetrap.bind(['enter'], () => { this.handleEquals() })
+    Mousetrap.bind(['=', 'enter'], () => { this.handleEquals() })
     Mousetrap.bind({
       //'0': this.handleNumber.bind(this, '0'), --- this does exactly the same thing.
       '0': () => { this.handleNumber('0') },
@@ -174,6 +211,7 @@ class Body extends React.Component {
           <div id="plus"      onClick={ () => this.handleOperation('+') }>+</div>
           <div id="zero"      onClick={ () => this.handleNumber('0')    }>0</div>
           <div id="dot"       onClick={ () => this.handleDot()          }>.</div>
+          {/* <div id="equals"    onClick={ () => this.handleOperation('=') }>=</div> */}
           <div id="equals"    onClick={ () => this.handleEquals()       }>=</div>
         </div>
       </React.Fragment>
