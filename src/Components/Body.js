@@ -171,6 +171,7 @@ class Body extends React.Component {
     // Handle keystrokes
     Mousetrap.bind(['c', 'C', 'esc'], () => { this.handleClear() })
     Mousetrap.bind(['%'], () => { this.handlePercent() })
+    Mousetrap.bind(['~'], () => { this.handlePlusMinus() })
     Mousetrap.bind(['/'], () => { this.handleOperation('/') })
     Mousetrap.bind(['x', 'X', '*'], () => { this.handleOperation('x') })
     Mousetrap.bind(['-'], () => { this.handleOperation('-') })
@@ -212,7 +213,6 @@ class Body extends React.Component {
           <div id="plus"      onClick={ () => this.handleOperation('+') }>+</div>
           <div id="zero"      onClick={ () => this.handleNumber('0')    }>0</div>
           <div id="dot"       onClick={ () => this.handleDot()          }>.</div>
-          {/* <div id="equals"    onClick={ () => this.handleOperation('=') }>=</div> */}
           <div id="equals"    onClick={ () => this.handleEquals()       }>=</div>
         </div>
       </React.Fragment>

@@ -21,7 +21,12 @@ const StyledDiv = styled.div`
 
 class Header extends React.Component {
   render() {
-    const { answer } = this.props
+    let { answer } = this.props
+    answer = String(Number(answer).toFixed(8))
+    console.log(answer.length)
+    answer = answer.replace(/[.]0*$|0*$/, '')
+    console.log(answer, typeof(answer))
+    //answer.length > 10 ? len = 10 : len = answer.length
     return (
     	<StyledDiv id="calc-header">{answer}</StyledDiv>
     )
