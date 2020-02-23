@@ -22,11 +22,27 @@ const StyledDiv = styled.div`
 class Header extends React.Component {
   render() {
     let { answer } = this.props
+    let wholePart = ""
+    let decimalPart = ""
+    if (answer.indexOf(".") === -1) {
+      wholePart = answer
+    } else {
+      wholePart = answer.substring(0,answer.indexOf("."))
+      decimalPart = answer.substring(answer.indexOf(".")+1)
+    }
+    if (wholePart.length + decimalPart.length > 8) {
+      answer = parseFloat(answer).toExponential(2)
+    }
+    /*
+    let ans = Number(this.props.answer)
+    console.log(ans)
+    //if (ans > 9)
+    console.log(this.props)
     answer = String(Number(answer).toFixed(8))
     console.log(answer.length)
     answer = answer.replace(/[.]0*$|0*$/, '')
     console.log(answer, typeof(answer))
-    //answer.length > 10 ? len = 10 : len = answer.length
+    //answer.length > 10 ? len = 10 : len = answer.length*/
     return (
     	<StyledDiv id="calc-header">{answer}</StyledDiv>
     )

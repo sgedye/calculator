@@ -70,7 +70,8 @@ class Body extends React.Component {
       storedValue: prevState.answer,
       numPressed: false,
       operation,
-      equalsPressed: false
+      equalsPressed: false,
+      decPressed: false
     }))
   }
   handleEquals() {
@@ -139,7 +140,7 @@ class Body extends React.Component {
   }
   handleDot() {
     /* . */
-    if (this.state.decPressed === false) {
+    if (!this.state.decPressed) {
       this.setState(prevState => ({
         answer: prevState.answer += ".",
         decPressed: true,
@@ -156,7 +157,7 @@ class Body extends React.Component {
     if (this.state.numPressed) {
       this.setState((prevState) => ({ answer: prevState.answer += digit }))
     } else {
-      if (digit !== '0') {
+      if (digit !== '0' || this.state.operation) {
         this.setState(() => ({
           answer: digit,
           numPressed: true
