@@ -63,16 +63,42 @@ class Body extends React.Component {
   handleOperation(operation) {
     //if (this.state.answer !== '0') {
     if (!!this.state.operation && !this.state.equalsPressed) {
-      this.setState(() => ({ numPressed: false }))
-      this.handleEquals()
+      //if (this.state.operation !== '-') {
+
+
+
+        //this.handlePlusMinus()
+        /*this.setState(prevState => ({
+          operation: prevState.operation,
+          answer: String(Number(prevState.answer) * -1)
+        }))*/
+      //} else {
+
+
+        this.setState(() => ({ numPressed: false }))
+        this.handleEquals()
+
+        /*
+      } else {
+        this.setState((prevState) => ({
+          storedValue: String(Number(prevState.answer) * -1),
+          numPressed: false,
+          operation: prevState.operation
+        }))       
+      }
     }
-    this.setState((prevState) => ({
-      storedValue: prevState.answer,
-      numPressed: false,
-      operation,
-      equalsPressed: false,
-      decPressed: false
-    }))
+    
+    //if (!!this.state.operation && !this.state.equalsPressed) {
+*/
+    } //else {
+      this.setState((prevState) => ({
+        storedValue: prevState.answer,
+        numPressed: false,
+        operation,
+        equalsPressed: false,
+        decPressed: false
+      }))
+  //  }
   }
   handleEquals() {
     if (!!this.state.operation) {
@@ -167,7 +193,7 @@ class Body extends React.Component {
   }
 
   render() {
-    //console.log(this.state)
+    console.log(this.state)
     //console.log(this.prevState)
     // Handle keystrokes
     Mousetrap.bind(['c', 'C', 'esc'], () => { this.handleClear() })
