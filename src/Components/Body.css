@@ -114,7 +114,7 @@
   grid-area: percent;
 }
 
-#calc-buttons #divide, #calc-buttons #multiply, #calc-buttons #minus, #calc-buttons #plus, #calc-buttons #equals {
+#calc-buttons #divide, #calc-buttons #multiply, #calc-buttons #subtract, #calc-buttons #add, #calc-buttons #equals {
   background-color: orange;
 }
 

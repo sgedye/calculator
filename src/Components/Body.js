@@ -167,7 +167,7 @@ class Body extends React.Component {
   }
 
   render() {
-    console.log(this.state)
+    //console.log(this.state)
     //console.log(this.prevState)
     // Handle keystrokes
     Mousetrap.bind(['c', 'C', 'esc'], () => { this.handleClear() })
@@ -207,13 +207,13 @@ class Body extends React.Component {
           <div id="four"      onClick={ () => this.handleNumber('4')    }>4</div>
           <div id="five"      onClick={ () => this.handleNumber('5')    }>5</div>
           <div id="six"       onClick={ () => this.handleNumber('6')    }>6</div>
-          <div id="minus"     onClick={ () => this.handleOperation('-') }>-</div>
+          <div id="subtract"  onClick={ () => this.handleOperation('-') }>-</div>
           <div id="one"       onClick={ () => this.handleNumber('1')    }>1</div>
           <div id="two"       onClick={ () => this.handleNumber('2')    }>2</div>
           <div id="three"     onClick={ () => this.handleNumber('3')    }>3</div>
-          <div id="plus"      onClick={ () => this.handleOperation('+') }>+</div>
+          <div id="add"       onClick={ () => this.handleOperation('+') }>+</div>
           <div id="zero"      onClick={ () => this.handleNumber('0')    }>0</div>
-          <div id="dot"       onClick={ () => this.handleDot()          }>.</div>
+          <div id="decimal"   onClick={ () => this.handleDot()          }>.</div>
           <div id="equals"    onClick={ () => this.handleEquals()       }>=</div>
         </div>
       </React.Fragment>
