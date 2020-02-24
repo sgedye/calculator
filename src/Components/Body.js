@@ -60,56 +60,92 @@ class Body extends React.Component {
       decPressed: true
     }))
   }
+  // 15/16 -- about as good as I can get :/
   handleOperation(operation) {
-    //if (this.state.answer !== '0') {
+    this.setState(() => ({ numPressed: false }))
     if (!!this.state.operation && !this.state.equalsPressed) {
-      //if (this.state.operation !== '-') {
-
-
-
-        //this.handlePlusMinus()
-        /*this.setState(prevState => ({
-          operation: prevState.operation,
-          answer: String(Number(prevState.answer) * -1)
-        }))*/
-      //} else {
-
-
-        this.setState(() => ({ numPressed: false }))
         this.handleEquals()
+    }
+    this.setState((prevState) => ({
+      storedValue: prevState.answer,
+      operation,
+      equalsPressed: false,
+      decPressed: false
+    }))
+  }
 
-        /*
+  /* Failed Attempt
+  handleOperation(operation) {
+    this.setState(() => ({ numPressed: false }))
+    if (operation === '-' && this.state.operation.length === 1) {
+      this.setState(prevState => ({
+        operation: prevState.operation + '-',
+      }))
+    } else {
+      this.setState(() => ({ operation }))
+    }
+    this.setState((prevState) => ({
+      storedValue: prevState.answer,
+      equalsPressed: false,
+      decPressed: false
+    }))
+  }
+  */
+
+  /* Failed Attempt:
+  handleOperation(operation) {
+    if (operation === '-' && this.state.operation.length === 1) {
+      this.setState(prevState => ({
+        //operation: prevState.operation + '-'
+        storedValue: String(Number(prevState.answer) * -1)
+      }))
+    }
+    this.setState(() => ({ numPressed: false }))
+    if (!!this.state.operation && !this.state.equalsPressed) {
+      this.handleEquals()
+    }
+    this.setState((prevState) => ({
+      storedValue: prevState.answer,
+      operation,
+      equalsPressed: false,
+      decPressed: false
+    }))
+  }
+  */
+  /* Failed Attempt:
+  handleOperation(operation) {
+    this.setState(() => ({ numPressed: false, decPressed: false }))
+    if (operation === "-") {
+      if (this.state.operation.length < 2) {
+        this.setState(prevState => ({ operation: prevState.operation + "-" }))
+      }
+    } else {
+      if (!this.state.equalsPressed) {
+        this.setState(() => ({ operation }))
+        this.handleEquals()
       } else {
-        this.setState((prevState) => ({
-          storedValue: String(Number(prevState.answer) * -1),
-          numPressed: false,
-          operation: prevState.operation
-        }))       
+        this.setState(prevState => ({
+          storedValue: prevState.answer,
+          operation,
+          equalsPressed: false
+        }))
       }
     }
-    
-    //if (!!this.state.operation && !this.state.equalsPressed) {
-*/
-    } //else {
-      this.setState((prevState) => ({
-        storedValue: prevState.answer,
-        numPressed: false,
-        operation,
-        equalsPressed: false,
-        decPressed: false
-      }))
-  //  }
   }
+  */
   handleEquals() {
     if (!!this.state.operation) {
-      switch(this.state.operation) {
+      let tempVal = this.state.answer
+      if (this.state.operation.length === 2) {
+        tempVal = String(Number(tempVal) * -1)
+      }
+      switch(this.state.operation[0]) {
         case '/':
           if (this.state.equalsPressed) {
             this.setState((prevState) => ({
               answer: ((Number(prevState.answer)) / (Number(prevState.storedValue))).toString()
             }))
           } else {
-            let tempVal = this.state.answer
             this.setState((prevState) => ({
               storedValue: tempVal,
               answer: ((Number(prevState.storedValue)) / (Number(prevState.answer))).toString(),
@@ -123,7 +159,6 @@ class Body extends React.Component {
               answer: ((Number(prevState.storedValue)) * (Number(prevState.answer))).toString()
             }))
           } else {
-            let tempVal = this.state.answer
             this.setState((prevState) => ({
               storedValue: tempVal,
               answer: ((Number(prevState.storedValue)) * (Number(prevState.answer))).toString(),
@@ -137,7 +172,6 @@ class Body extends React.Component {
               answer: String(prevState.answer - prevState.storedValue)
             }))
           } else {
-            let tempVal = this.state.answer
             this.setState((prevState) => ({
               storedValue: tempVal,
               answer: String(prevState.storedValue - prevState.answer),
@@ -151,7 +185,6 @@ class Body extends React.Component {
               answer: ((Number(prevState.storedValue)) + (Number(prevState.answer))).toString()
             }))
           } else {
-            let tempVal = this.state.answer
             this.setState((prevState) => ({
               storedValue: tempVal,
               answer: ((Number(prevState.storedValue)) + (Number(prevState.answer))).toString(),
@@ -160,7 +193,7 @@ class Body extends React.Component {
           } 
           break
         default:
-          console.log(`The operation (${this.prevState.operation}) does not exist.`)
+          console.log(`The operation (${this.state.operation}) does not exist.`)
       }
     }
   }
