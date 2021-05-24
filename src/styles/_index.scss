@@ -1,18 +1,22 @@
-*, *::before, *::after {
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   margin: 0;
 }
 
 body {
   font-family: Helvetica, Arial, sans-serif;
-  
   /* background: #20262E; */
   padding: 20px;
   color: #fff;
   font-size: 1.5em;
   font-weight: 500;
 }
-p { color: blue; }
+p {
+  color: blue;
+}
 #calculator {
   border: 1px solid #000;
   border-bottom: none;
@@ -56,37 +60,77 @@ p { color: blue; }
     border: 1px solid #000;
     cursor: pointer;
   }
-  #seven { grid-area: seven; }
-  #eight { grid-area: eight; }
-  #nine { grid-area: nine; }
-  #four { grid-area: four; }
-  #five { grid-area: five; }
-  #six { grid-area: six; }
-  #one { grid-area: one; }
-  #two { grid-area: two; }
-  #three { grid-area: three; }
+  #seven {
+    grid-area: seven;
+  }
+  #eight {
+    grid-area: eight;
+  }
+  #nine {
+    grid-area: nine;
+  }
+  #four {
+    grid-area: four;
+  }
+  #five {
+    grid-area: five;
+  }
+  #six {
+    grid-area: six;
+  }
+  #one {
+    grid-area: one;
+  }
+  #two {
+    grid-area: two;
+  }
+  #three {
+    grid-area: three;
+  }
   #zero {
     border-radius: 0 0 0 4px;
     grid-area: zero;
   }
-  #dot { grid-area: dot; }
+  #dot {
+    grid-area: dot;
+  }
 
   /* Dark grey buttons (top row) */
-  #clear, #plus-minus, #percent {
+  #clear,
+  #plus-minus,
+  #percent {
     background-color: #666;
   }
-  #clear { grid-area: erase; }
-  #plus-minus { grid-area: plus-minus; }
-  #percent { grid-area: percent; }
+  #clear {
+    grid-area: erase;
+  }
+  #plus-minus {
+    grid-area: plus-minus;
+  }
+  #percent {
+    grid-area: percent;
+  }
 
   /* Orange buttons (right column) */
-  #divide, #multiply, #minus, #plus, #equals {
+  #divide,
+  #multiply,
+  #minus,
+  #plus,
+  #equals {
     background-color: orange;
   }
-  #divide { grid-area: div; }
-  #multiply { grid-area: times; }
-  #minus { grid-area: subtract; }
-  #plus { grid-area: add; }
+  #divide {
+    grid-area: div;
+  }
+  #multiply {
+    grid-area: times;
+  }
+  #minus {
+    grid-area: subtract;
+  }
+  #plus {
+    grid-area: add;
+  }
   #equals {
     grid-area: equals;
     border-radius: 0 0 4px 0;

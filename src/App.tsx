@@ -1,14 +1,25 @@
-import React from 'react'
-import styled from 'styled-components'
+import styled from "styled-components";
 
-import Body from './Components/Body.js'
-import Footer from './Components/Footer.js'
+import { Body } from "./components/Body";
+import { Footer } from "./components/Footer";
+
+export const App: React.FC<{}> = () => {
+  return (
+    <StyledSection>
+      <Title id="title">Calculator</Title>
+      <Calculator id="calculator">
+        <Body />
+      </Calculator>
+      <Footer />
+    </StyledSection>
+  );
+};
 
 const StyledSection = styled.section`
   @media screen and (min-width: 768px) {
     align-items: center;
   }
-`
+`;
 
 const Title = styled.h2`
   font-size: 2em;
@@ -16,7 +27,7 @@ const Title = styled.h2`
   padding: 20px 0 0 0;
   text-align: center;
   color: #000;
-`
+`;
 const Calculator = styled.div`
   border: 1px solid #000;
   box-shadow: 2px 3px 5px #000;
@@ -37,18 +48,4 @@ const Calculator = styled.div`
   @media screen and (min-width: 1440px) {
     margin-left: 230px;
   }
-`
-
-function App () {
-  return (
-    <StyledSection>
-      <Title id="title">Calculator</Title>
-      <Calculator id="calculator">
-        <Body />
-      </Calculator>
-      <Footer />
-    </StyledSection>
-  )
-}
-
-export default App
+`;
