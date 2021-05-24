@@ -19,29 +19,27 @@ const StyledDiv = styled.div`
   cursor: default;
 `;
 
-export const Header: React.FC<{}> = () => {
-  // let { answer } = this.props;
-  let answer = "fix-me";
-  let wholePart = "";
-  //let decimalPart = ""
-  if (answer.indexOf(".") === -1) {
-    if (answer.length > 8) {
-      answer = parseFloat(answer).toExponential(2);
-    }
-  } else {
-    wholePart = answer.substring(0, answer.indexOf("."));
-    //decimalPart = answer.substring(answer.indexOf(".")+1)
-    if (wholePart.length > 8) {
-      answer = parseFloat(answer).toExponential(2);
-    } else if (wholePart.length === 8) {
-      answer = answer.substring(0, 8);
-    } else {
-      answer = answer.substring(0, 9);
-    }
-    if (parseFloat(answer) < 0.0) {
-      answer = "0";
-    }
-  }
+export const Header: React.FC<{ answer: string }> = ({ answer }) => {
+  // let wholePart = "";
+  // //let decimalPart = ""
+  // if (answer.indexOf(".") === -1) {
+  //   if (answer.length > 8) {
+  //     answer = parseFloat(answer).toExponential(2);
+  //   }
+  // } else {
+  //   wholePart = answer.substring(0, answer.indexOf("."));
+  //   //decimalPart = answer.substring(answer.indexOf(".")+1)
+  //   if (wholePart.length > 8) {
+  //     answer = parseFloat(answer).toExponential(2);
+  //   } else if (wholePart.length === 8) {
+  //     answer = answer.substring(0, 8);
+  //   } else {
+  //     answer = answer.substring(0, 9);
+  //   }
+  //   if (parseFloat(answer) < 0.0) {
+  //     answer = "0";
+  //   }
+  // }
   /*
     let ans = Number(this.props.answer)
     console.log(ans)
