@@ -7,7 +7,7 @@ const StyledDiv = styled.div`
     border: 1px solid #000;
     box-shadow: 2px 3px 5px #000;
     border-bottom: none;
-    border-radius: 4px;
+    border-radius: 0.5rem;
     width: 280px;
     margin: 20px auto;
   }

@@ -14,7 +14,7 @@ const StyledDiv = styled.div`
   font-size: 2em;
   padding: 5px 10px;
   border: 1px solid #000;
-  border-radius: 4px 4px 0 0;
+  border-radius: 0.5rem 0.5rem 0 0;
   background-color: #444;
   cursor: default;
 `;
