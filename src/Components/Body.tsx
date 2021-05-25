@@ -32,52 +32,57 @@ const calculate = (num1: number, num2: number, operator: Operator) => {
 };
 
 export const Body: React.FC<{}> = () => {
-  const [answer, setAnswer] = useState<string>("0");
-
-  const [operationList, setOperationList] = useState<string[]>([]);
-  const [current, setCurrent] = useState<string>("0");
+  const [current, setCurrent] = useState<number>(0);
+  const [prevAnswer, setPrevAnswer] = useState<number>(0);
+  const [operator, setOperator] = useState<Operator | null>(null);
 
   const [isDecimal, setIsDecimal] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   setAnswer(current);
-  // }, [current]);
-
-  const handleOperation = (operator: Operator) => {
-    if (operationList.length > 2) {
-      handleEquals();
+  const handleOperation = (op: Operator) => {
+    if (operator === null) {
+      if (current !== 0) {
+        setPrevAnswer(current);
+        setCurrent(0);
+        setOperator(op);
+      }
+    } else {
+      if (op === "-" && current === 0) {
+        return setCurrent((prev) => prev * -1);
+      } else if (Object.is(current, -0) || current < 0) {
+        setCurrent((prev) => prev * -1);
+      }
+      if (current !== 0) {
+        handleEquals();
+      }
+      setOperator(op);
     }
-    setOperationList((prev) => [...prev, current, operator]);
-    setCurrent("0");
   };
 
-  const handleEquals = () => {
-    setOperationList((prev) => [...prev, current]);
-    setCurrent("0");
-    if (operationList.length > 2) {
-      const [num1, operator, num2, ...rest] = operationList;
-      console.log(num1, operator, num2, rest);
-      const answer = calculate(
-        Number(num1),
-        Number(num2),
-        operator as Operator
-      );
-      setOperationList([`${answer}`, ...rest]);
+  console.log({
+    curr: current,
+    prev: prevAnswer,
+    op: operator,
+  });
+
+  const handleEquals = (btnPressed: boolean = false) => {
+    if (operator !== null) {
+      const answer = calculate(prevAnswer, current, operator);
+      setPrevAnswer(answer);
+      btnPressed ? setCurrent(answer) : setCurrent(0);
+      setOperator(null);
     }
   };
 
   const handleSpecialOperation = (operator: SpecialOperator) => {
     switch (operator) {
       case "C":
-        setCurrent("0");
-        // setAnswer("0");
+        setCurrent(0);
+        setPrevAnswer(0);
+        setOperator(null);
         setIsDecimal(false);
-        setOperationList([]);
         break;
       case "+/-":
-        current.startsWith("-")
-          ? setCurrent((prev) => prev.substring(1))
-          : setCurrent((prev) => "-" + prev);
+        setCurrent((prev) => -1 * prev);
         break;
       case "%":
         break;
@@ -87,26 +92,25 @@ export const Body: React.FC<{}> = () => {
   };
 
   const handleNumber = (num: string) => {
-    current === "0"
-      ? setCurrent(num)
-      : current === "-0"
-      ? setCurrent("-" + num)
-      : setCurrent((prev) => prev + num);
+    if (Object.is(current, -0)) {
+      return setCurrent(Number(`-${num}`));
+    }
+    setCurrent((prev) => Number(`${prev}` + num));
   };
 
   const handleDecimal = () => {
     if (!isDecimal) {
       setIsDecimal(true);
-      setCurrent((prev) => prev + ".");
+      setCurrent((prev) => Number(prev + "."));
     }
   };
 
-  console.log(current, operationList);
   return (
     <Fragment>
-      <Header answer={current} />
+      <Header answer={current || prevAnswer || 0} />
       <div id="calc-buttons">
         <StyledButton
+          id="clear"
           bgColor="#666"
           onClick={() => handleSpecialOperation("C")}
         >
@@ -124,59 +128,101 @@ export const Body: React.FC<{}> = () => {
         >
           {/* % */}
         </StyledButton>
-        <StyledButton bgColor="orange;" onClick={() => handleOperation("/")}>
+        <StyledButton
+          id="divide"
+          bgColor="orange;"
+          onClick={() => handleOperation("/")}
+        >
           ÷
         </StyledButton>
-        <StyledButton bgColor="#aaa" onClick={() => handleNumber("7")}>
+        <StyledButton
+          id="seven"
+          bgColor="#aaa"
+          onClick={() => handleNumber("7")}
+        >
           7
         </StyledButton>
-        <StyledButton bgColor="#aaa" onClick={() => handleNumber("8")}>
+        <StyledButton
+          id="eight"
+          bgColor="#aaa"
+          onClick={() => handleNumber("8")}
+        >
           8
         </StyledButton>
-        <StyledButton bgColor="#aaa" onClick={() => handleNumber("9")}>
+        <StyledButton
+          id="nine"
+          bgColor="#aaa"
+          onClick={() => handleNumber("9")}
+        >
           9
         </StyledButton>
-        <StyledButton bgColor="orange;" onClick={() => handleOperation("*")}>
+        <StyledButton
+          id="multiply"
+          bgColor="orange;"
+          onClick={() => handleOperation("*")}
+        >
           x
         </StyledButton>
-        <StyledButton bgColor="#aaa" onClick={() => handleNumber("4")}>
+        <StyledButton
+          id="four"
+          bgColor="#aaa"
+          onClick={() => handleNumber("4")}
+        >
           4
         </StyledButton>
-        <StyledButton bgColor="#aaa" onClick={() => handleNumber("5")}>
+        <StyledButton
+          id="five"
+          bgColor="#aaa"
+          onClick={() => handleNumber("5")}
+        >
           5
         </StyledButton>
-        <StyledButton bgColor="#aaa" onClick={() => handleNumber("6")}>
+        <StyledButton id="six" bgColor="#aaa" onClick={() => handleNumber("6")}>
           6
         </StyledButton>
-        <StyledButton bgColor="orange;" onClick={() => handleOperation("-")}>
+        <StyledButton
+          id="subtract"
+          bgColor="orange;"
+          onClick={() => handleOperation("-")}
+        >
           -
         </StyledButton>
-        <StyledButton bgColor="#aaa" onClick={() => handleNumber("1")}>
+        <StyledButton id="one" bgColor="#aaa" onClick={() => handleNumber("1")}>
           1
         </StyledButton>
-        <StyledButton bgColor="#aaa" onClick={() => handleNumber("2")}>
+        <StyledButton id="two" bgColor="#aaa" onClick={() => handleNumber("2")}>
           2
         </StyledButton>
-        <StyledButton bgColor="#aaa" onClick={() => handleNumber("3")}>
+        <StyledButton
+          id="three"
+          bgColor="#aaa"
+          onClick={() => handleNumber("3")}
+        >
           3
         </StyledButton>
-        <StyledButton bgColor="orange;" onClick={() => handleOperation("+")}>
+        <StyledButton
+          id="add"
+          bgColor="orange;"
+          onClick={() => handleOperation("+")}
+        >
           +
         </StyledButton>
         <StyledButton
+          id="zero"
           bgColor="#aaa;"
           className="zero-btn"
           onClick={() => handleNumber("0")}
         >
           0
         </StyledButton>
-        <StyledButton bgColor="#aaa;" onClick={handleDecimal}>
+        <StyledButton id="decimal" bgColor="#aaa;" onClick={handleDecimal}>
           .
         </StyledButton>
         <StyledButton
+          id="equals"
           className="equals-btn"
           bgColor="orange;"
-          onClick={handleEquals}
+          onClick={() => handleEquals(true)}
         >
           =
         </StyledButton>

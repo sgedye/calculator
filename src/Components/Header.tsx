@@ -19,7 +19,7 @@ const StyledDiv = styled.div`
   cursor: default;
 `;
 
-export const Header: React.FC<{ answer: string }> = ({ answer }) => {
+export const Header: React.FC<{ answer: number }> = ({ answer }) => {
   // let wholePart = "";
   // //let decimalPart = ""
   // if (answer.indexOf(".") === -1) {
