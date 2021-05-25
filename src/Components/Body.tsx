@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState } from "react";
 import { Header } from "./Header";
 import Mousetrap from "mousetrap";
 import styled from "styled-components";
@@ -104,6 +104,20 @@ export const Body: React.FC<{}> = () => {
       setCurrent((prev) => Number(prev + "."));
     }
   };
+
+  // Handle keystrokes
+  Mousetrap.bind(["c", "C", "esc"], () => handleSpecialOperation("C"));
+  Mousetrap.bind(["%"], () => handleSpecialOperation("%"));
+  Mousetrap.bind(["~"], () => handleSpecialOperation("+/-"));
+  Mousetrap.bind(["/"], () => handleOperation("/"));
+  Mousetrap.bind(["x", "X", "*"], () => handleOperation("*"));
+  Mousetrap.bind(["-"], () => handleOperation("-"));
+  Mousetrap.bind(["+", "space"], () => handleOperation("+"));
+  Mousetrap.bind(["=", "enter"], () => handleEquals(true));
+  Mousetrap.bind(["."], () => handleDecimal());
+  Mousetrap.bind(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], (e) =>
+    handleNumber(e.key)
+  );
 
   return (
     <Fragment>
@@ -361,29 +375,7 @@ const StyledButton = styled.button<{ bgColor: string }>`
 //   }
 
 //   render() {
-//     // Handle keystrokes
-//     Mousetrap.bind(["c", "C", "esc"], () => this.handleClear());
-//     Mousetrap.bind(["%"], () => this.handlePercent());
-//     Mousetrap.bind(["~"], () => this.handlePlusMinus());
-//     Mousetrap.bind(["/"], () => this.handleOperation("/"));
-//     Mousetrap.bind(["x", "X", "*"], () => this.handleOperation("*"));
-//     Mousetrap.bind(["-"], () => this.handleOperation("-"));
-//     Mousetrap.bind(["+", "space"], () => this.handleOperation("+"));
-//     Mousetrap.bind(["=", "enter"], () => this.handleEquals());
-//     Mousetrap.bind({
-//       0: () => this.handleNumber("0"),
-//       1: () => this.handleNumber("1"),
-//       2: () => this.handleNumber("2"),
-//       3: () => this.handleNumber("3"),
-//       4: () => this.handleNumber("4"),
-//       5: () => this.handleNumber("5"),
-//       6: () => this.handleNumber("6"),
-//       7: () => this.handleNumber("7"),
-//       8: () => this.handleNumber("8"),
-//       9: () => this.handleNumber("9"),
-//       ".": () => this.handleDecimal(),
-//     });
-
+//
 //     return (
 //       <React.Fragment>
 //       </React.Fragment>
