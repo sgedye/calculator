@@ -1,17 +1,7 @@
-import { Fragment, useState } from "react";
-import { Header } from "./Header";
+import { useState } from "react";
+import { Display } from ".";
 import Mousetrap from "mousetrap";
 import styled from "styled-components";
-// import "./mousetrap-bind-dictionary";
-
-/*
-const CalculatorOperations = {
-  '/': (prevValue, nextValue) => Number(prevValue) / Number(nextValue),
-  '*': (prevValue, nextValue) => Number(prevValue) * Number(nextValue),
-  '+': (prevValue, nextValue) => Number(prevValue) + Number(nextValue),
-  '-': (prevValue, nextValue) => Number(prevValue) - Number(nextValue),
-  '=': (prevValue, nextValue) => Number(nextValue)
-}*/
 
 type Operator = "+" | "-" | "/" | "*";
 type SpecialOperator = "C" | "+/-" | "%";
@@ -88,6 +78,7 @@ export const Body: React.FC<{}> = () => {
           : setCurrent((prev) => "-" + prev);
         break;
       case "%":
+        setCurrent((prev) => (Number(prev) / 100).toString());
         break;
       default:
         break;
@@ -124,8 +115,8 @@ export const Body: React.FC<{}> = () => {
   );
 
   return (
-    <Fragment>
-      <Header answer={current || `${prevAnswer}` || "0"} />
+    <Calculator>
+      <Display answer={current || `${prevAnswer}` || "0"} />
       <div id="calc-buttons">
         <StyledButton
           id="clear"
@@ -144,7 +135,7 @@ export const Body: React.FC<{}> = () => {
           bgColor="#666;"
           onClick={() => handleSpecialOperation("%")}
         >
-          {/* % */}
+          %
         </StyledButton>
         <StyledButton
           id="divide"
@@ -245,146 +236,35 @@ export const Body: React.FC<{}> = () => {
           =
         </StyledButton>
       </div>
-    </Fragment>
+    </Calculator>
   );
 };
 
-const StyledButton = styled.button<{ bgColor: string }>`
-  display: block;
-  text-align: center;
-  font-size: 1.5em;
-  padding: 1rem 2rem;
+const Calculator = styled.div`
   border: 1px solid #000;
+  box-shadow: 2px 3px 5px #000;
+  border-bottom: none;
+  border-radius: 0.5rem;
+  min-width: 20rem;
+  max-width: 40rem;
+  @media screen and (min-width: 768px) {
+    display: inline-block;
+    width: calc(100vw - 385px);
+  }
+`;
+
+const StyledButton = styled.button<{ bgColor: string }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: white;
+  font-size: 1.5em;
+  font-weight: 500;
+  padding: 1rem 0;
+  border: 1px solid #000;
   background-color: ${(p) => p.bgColor};
   transition: 100ms all ease;
   &:active {
     box-shadow: inset 0 0 1rem #11111144;
   }
 `;
-// class Body extends React.Component {
-//   constructor() {
-//     super();
-//     this.state = {
-//       answer: "0",
-//       storedValue: "0",
-//       operation: "",
-//       plusMinusPressed: false,
-//       percentPressed: false,
-//       decPressed: false,
-//       numPressed: false,
-//       equalsPressed: false,
-//     };
-//   }
-
-//   handleClear() {
-//     this.setState(() => ({
-//       answer: "0",
-//       storedValue: "0",
-//       operation: "",
-//       plusMinusPressed: false,
-//       percentPressed: false,
-//       decPressed: false,
-//       numPressed: false,
-//       equalsPressed: false,
-//     }));
-//   }
-//   handlePlusMinus() {
-//     this.setState((prevState) => ({
-//       answer: (Number(prevState.answer) * -1).toString(),
-//       plusMinusPressed: true,
-//     }));
-//   }
-//   handlePercent() {
-//     this.setState((prevState) => ({
-//       answer: (Number(prevState.answer) / 100).toString(),
-//       percentPressed: true,
-//       decPressed: true,
-//     }));
-//   }
-//   // 15/16 -- about as good as I can get :/
-//   handleOperation(operation) {
-//     this.setState(() => ({ numPressed: false }));
-//     if (!!this.state.operation && !this.state.equalsPressed) {
-//       this.handleEquals();
-//     }
-//     this.setState((prevState) => ({
-//       storedValue: prevState.answer,
-//       operation,
-//       equalsPressed: false,
-//       decPressed: false,
-//     }));
-//   }
-
-//   handleEquals() {
-//     if (!!this.state.operation) {
-//       let tempVal = this.state.answer;
-//       if (this.state.operation.length === 2) {
-//         tempVal = String(Number(tempVal) * -1);
-//       }
-//       switch (this.state.operation[0]) {
-//         case "+":
-//           if (this.state.equalsPressed) {
-//             this.setState((prevState) => ({
-//               answer: (
-//                 Number(prevState.storedValue) + Number(prevState.answer)
-//               ).toString(),
-//             }));
-//           } else {
-//             this.setState((prevState) => ({
-//               storedValue: tempVal,
-//               answer: (
-//                 Number(prevState.storedValue) + Number(prevState.answer)
-//               ).toString(),
-//               equalsPressed: true,
-//             }));
-//           }
-//           break;
-//         default:
-//           console.log(
-//             `The operation (${this.state.operation}) does not exist.`
-//           );
-//       }
-//     }
-//   }
-
-//   handleDecimal() {
-//     if (!this.state.decPressed) {
-//       this.setState((prevState) => ({
-//         answer: (prevState.answer += "."),
-//         decPressed: true,
-//         numPressed: true,
-//       }));
-//     }
-//   }
-
-//   handleNumber(digit) {
-//     if (
-//       (this.state.plusMinusPressed || this.state.percentPressed) &&
-//       !this.state.operation
-//     ) {
-//       this.handleClear();
-//       //this.setState(() => ({ answer: '' }))     // Fix this func. once I have operations.
-//     }
-//     if (this.state.numPressed) {
-//       this.setState((prevState) => ({ answer: (prevState.answer += digit) }));
-//     } else {
-//       if (digit !== "0" || this.state.operation) {
-//         this.setState(() => ({
-//           answer: digit,
-//           numPressed: true,
-//         }));
-//       }
-//     }
-//   }
-
-//   render() {
-//
-//     return (
-//       <React.Fragment>
-//       </React.Fragment>
-//     );
-//   }
-// }
-
-// export default Body;
