@@ -32,26 +32,27 @@ const calculate = (num1: number, num2: number, operator: Operator) => {
 };
 
 export const Body: React.FC<{}> = () => {
-  const [current, setCurrent] = useState<number>(0);
+  const [current, setCurrent] = useState<string>("0");
   const [prevAnswer, setPrevAnswer] = useState<number>(0);
   const [operator, setOperator] = useState<Operator | null>(null);
 
   const [isDecimal, setIsDecimal] = useState<boolean>(false);
 
   const handleOperation = (op: Operator) => {
+    setIsDecimal(false);
     if (operator === null) {
-      if (current !== 0) {
-        setPrevAnswer(current);
-        setCurrent(0);
+      if (current !== "0") {
+        setPrevAnswer(Number(current));
+        setCurrent("0");
         setOperator(op);
       }
     } else {
-      if (op === "-" && current === 0) {
-        return setCurrent((prev) => prev * -1);
-      } else if (Object.is(current, -0) || current < 0) {
-        setCurrent((prev) => prev * -1);
+      if (op === "-" && current === "0") {
+        return setCurrent("-0");
+      } else if (current.startsWith("-")) {
+        setCurrent((prev) => prev.substring(1));
       }
-      if (current !== 0) {
+      if (current !== "0" && current !== "-0") {
         handleEquals();
       }
       setOperator(op);
@@ -66,9 +67,9 @@ export const Body: React.FC<{}> = () => {
 
   const handleEquals = (btnPressed: boolean = false) => {
     if (operator !== null) {
-      const answer = calculate(prevAnswer, current, operator);
+      const answer = calculate(prevAnswer, Number(current), operator);
       setPrevAnswer(answer);
-      btnPressed ? setCurrent(answer) : setCurrent(0);
+      btnPressed ? setCurrent(`${answer}`) : setCurrent("0");
       setOperator(null);
     }
   };
@@ -76,13 +77,15 @@ export const Body: React.FC<{}> = () => {
   const handleSpecialOperation = (operator: SpecialOperator) => {
     switch (operator) {
       case "C":
-        setCurrent(0);
+        setCurrent("0");
         setPrevAnswer(0);
         setOperator(null);
         setIsDecimal(false);
         break;
       case "+/-":
-        setCurrent((prev) => -1 * prev);
+        current.startsWith("-")
+          ? setCurrent((prev) => prev.substring(1))
+          : setCurrent((prev) => "-" + prev);
         break;
       case "%":
         break;
@@ -92,16 +95,17 @@ export const Body: React.FC<{}> = () => {
   };
 
   const handleNumber = (num: string) => {
-    if (Object.is(current, -0)) {
-      return setCurrent(Number(`-${num}`));
-    }
-    setCurrent((prev) => Number(`${prev}` + num));
+    current === "0"
+      ? setCurrent(num)
+      : current === "-0"
+      ? setCurrent(`-${num}`)
+      : setCurrent((prev) => prev + num);
   };
 
   const handleDecimal = () => {
     if (!isDecimal) {
       setIsDecimal(true);
-      setCurrent((prev) => Number(prev + "."));
+      setCurrent((prev) => prev + ".");
     }
   };
 
@@ -121,7 +125,7 @@ export const Body: React.FC<{}> = () => {
 
   return (
     <Fragment>
-      <Header answer={current || prevAnswer || 0} />
+      <Header answer={current || `${prevAnswer}` || "0"} />
       <div id="calc-buttons">
         <StyledButton
           id="clear"

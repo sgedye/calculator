@@ -19,36 +19,48 @@ const StyledDiv = styled.div`
   cursor: default;
 `;
 
-export const Header: React.FC<{ answer: number }> = ({ answer }) => {
-  // let wholePart = "";
-  // //let decimalPart = ""
-  // if (answer.indexOf(".") === -1) {
-  //   if (answer.length > 8) {
-  //     answer = parseFloat(answer).toExponential(2);
-  //   }
-  // } else {
-  //   wholePart = answer.substring(0, answer.indexOf("."));
-  //   //decimalPart = answer.substring(answer.indexOf(".")+1)
-  //   if (wholePart.length > 8) {
-  //     answer = parseFloat(answer).toExponential(2);
-  //   } else if (wholePart.length === 8) {
-  //     answer = answer.substring(0, 8);
-  //   } else {
-  //     answer = answer.substring(0, 9);
-  //   }
-  //   if (parseFloat(answer) < 0.0) {
-  //     answer = "0";
-  //   }
-  // }
-  /*
-    let ans = Number(this.props.answer)
-    console.log(ans)
-    //if (ans > 9)
-    console.log(this.props)
-    answer = String(Number(answer).toFixed(8))
-    console.log(answer.length)
-    answer = answer.replace(/[.]0*$|0*$/, '')
-    console.log(answer, typeof(answer))
-    //answer.length > 10 ? len = 10 : len = answer.length*/
-  return <StyledDiv id="display">{answer}</StyledDiv>;
+export const Header: React.FC<{ answer: string }> = ({ answer }) => {
+  // Using absolute value of answer as a workingAnswer, to simplify checks.
+  const isNegative = Number(answer) < 0;
+  let workingAnswer = isNegative ? answer.substring(1) : answer;
+  let finalAnswer = workingAnswer.substring(0, 8);
+  if (workingAnswer.includes("e")) {
+    // Already converted into power of 10
+    const [number, power] = workingAnswer.split("e");
+    finalAnswer = `${number.substring(0, 4)}e${power}`;
+  } else {
+    // Number greater than 99999999 or smaller than -99999999
+    let wholePart =
+      workingAnswer.indexOf(".") === -1
+        ? workingAnswer
+        : workingAnswer.split(".")[0];
+    if (wholePart.length > 8) {
+      let tempAns = Math.round(Number(workingAnswer.substring(0, 4)) / 10) + "";
+      finalAnswer = `${tempAns[0]}.${tempAns[1]}${tempAns[2]}e+${
+        tempAns.length === 4
+          ? workingAnswer.length - 1
+          : workingAnswer.length - 2
+      }`;
+    } else {
+      if (wholePart === "0" || wholePart === "-0") {
+        // Number closer to zero than Abs(0.000001)
+        let decimalPart =
+          workingAnswer.indexOf(".") === -1 ? "" : workingAnswer.split(".")[1];
+        let tempAns = Number(decimalPart).toString();
+        let leadingZeros = decimalPart.length - tempAns.length;
+        if (leadingZeros > 5) {
+          finalAnswer = `${tempAns[0]}.${tempAns[1]}${tempAns[2]}e-${
+            leadingZeros + 1
+          }`;
+        }
+      }
+    }
+  }
+
+  return (
+    <StyledDiv id="display">
+      {isNegative && "-"}
+      {finalAnswer}
+    </StyledDiv>
+  );
 };
