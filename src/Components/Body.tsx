@@ -49,12 +49,6 @@ export const Body: React.FC<{}> = () => {
     }
   };
 
-  console.log({
-    curr: current,
-    prev: prevAnswer,
-    op: operator,
-  });
-
   const handleEquals = (btnPressed: boolean = false) => {
     if (operator !== null) {
       const answer = calculate(prevAnswer, Number(current), operator);
@@ -245,11 +239,11 @@ const Calculator = styled.div`
   box-shadow: 2px 3px 5px #000;
   border-bottom: none;
   border-radius: 0.5rem;
-  min-width: 20rem;
+  width: 80vw;
+  min-width: 15rem;
   max-width: 40rem;
   @media screen and (min-width: 768px) {
-    display: inline-block;
-    width: calc(100vw - 385px);
+    margin-right: 3rem;
   }
 `;
 

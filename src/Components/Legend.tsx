@@ -3,10 +3,10 @@ import styled from "styled-components";
 export const Legend: React.FC<{}> = () => {
   return (
     <StyledDiv>
-      <table style={{ margin: "auto", padding: "1rem 0" }}>
+      <table>
         <thead>
           <tr>
-            <th colSpan={2} style={{ paddingBottom: "0.5rem" }}>
+            <th colSpan={2} style={{ paddingBottom: "1rem" }}>
               Key Strokes:
             </th>
           </tr>
@@ -60,24 +60,16 @@ export const Legend: React.FC<{}> = () => {
 
 const StyledDiv = styled.div`
   display: none;
-  @media screen and (min-width: 600px) {
-    display: block;
+  @media screen and (min-width: 768px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20rem;
     color: #000;
+    background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid #000;
-    box-shadow: 2px 3px 5px #000;
     border-bottom: none;
     border-radius: 0.5rem;
-    width: 280px;
-  }
-  @media screen and (min-width: 768px) {
-    display: inline-block;
-    position: absolute;
-    right: 35px;
-  }
-  @media screen and (min-width: 1024px) {
-    right: 50px;
-  }
-  @media screen and (min-width: 1440px) {
-    right: 230px;
+    box-shadow: 2px 3px 5px #000;
   }
 `;
